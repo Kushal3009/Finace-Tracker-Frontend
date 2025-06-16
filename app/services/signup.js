@@ -15,7 +15,7 @@ const handleSignup = async (params) => {
                 "Content-Type": "application/json",
             },
         });
-        console.log(response)
+
         if (response.data.status !== 'success') {
             throw new Error("Sign Up failed");
         }

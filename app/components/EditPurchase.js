@@ -66,7 +66,7 @@ const EditPurchase = ({ isOpen, onClose, onSubmit, purchase }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updatePurchase(purchase._id, purchaseData);
+            await updatePurchase(purchase.id, purchaseData);
             toast.success('Purchase updated!');
             onSubmit && onSubmit();
             onClose();

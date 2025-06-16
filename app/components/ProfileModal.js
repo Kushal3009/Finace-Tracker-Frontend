@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { fetchUserDetails, updateUserDetails } from '../services/login';
+import { useCurrency } from './CurrencyContext';
 
 const currencies = [
     'INR', 'USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CNY', 'RUB', 'BRL', 'ZAR'
@@ -21,9 +22,10 @@ const currencyOptions = {
 };
 
 const ProfileModal = ({ isOpen, onClose }) => {
-    const [user, setUser] = useState({ username: '', email: '', currency: 'INR' });
+    const [user, setUser] = useState({ username: '', email: '', currency_type: 'INR' });
     const [editMode, setEditMode] = useState(false);
     const [form, setForm] = useState(user);
+    const { updateCurrency } = useCurrency();
 
     useEffect(() => {
         if (isOpen) {
@@ -31,7 +33,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 try {
                     const userDetails = await fetchUserDetails();
                     setUser(userDetails);
-                    setForm(userDetails);
+                    setForm(userDetails); // Ensure userDetails contains currency_type
                 } catch (error) {
                     toast.error(error.message || 'Failed to fetch user details');
                 }
@@ -43,20 +45,27 @@ const ProfileModal = ({ isOpen, onClose }) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-const handleSave = async () => {
-    try {
-        const updatedUser = await updateUserDetails(form);
-        setUser({
-            username: updatedUser?.username || form.username,
-            email: updatedUser?.email || form.email,
-            currency_type: updatedUser?.currency_type || form.currency_type,
-        });
-        setEditMode(false);
-        toast.success('Profile updated!');
-    } catch (error) {
-        toast.error(error.message || 'Failed to update profile');
-    }
-};
+    const handleSave = async () => {
+        try {
+            const updatedForm = {
+                ...form,
+                currency_type: currencyOptions[form.currency_type]?.symbol || form.currency_type
+            };
+            const updatedUser = await updateUserDetails(updatedForm);
+            setUser({
+                username: updatedUser?.username || updatedForm.username,
+                email: updatedUser?.email || updatedForm.email,
+                currency: updatedUser?.currency || updatedForm.currency,
+                currency_type: updatedUser?.currency_type || updatedForm.currency_type,
+            });
+            // Update global currency context
+            updateCurrency(updatedUser?.currency || updatedForm.currency, updatedUser?.currency_type || updatedForm.currency_type);
+            setEditMode(false);
+            toast.success('Profile updated!');
+        } catch (error) {
+            toast.error(error.message || 'Failed to update profile');
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -105,7 +114,7 @@ const handleSave = async () => {
                                 placeholder="Email"
                             />
                             <select
-                                name="currency"
+                                name="currency_type"
                                 value={form.currency_type}
                                 onChange={handleChange}
                                 className="w-full mb-3 px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-purple-500 text-lg"

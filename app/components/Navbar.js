@@ -73,10 +73,10 @@ const Navbar = () => {
                             <Wallet size={20} />
                             <span>Transactions</span>
                         </Link>
-                        <Link href="/analytics" className="flex items-center space-x-1 hover:text-purple-500 transition">
+                        {/* <Link href="/analytics" className="flex items-center space-x-1 hover:text-purple-500 transition">
                             <PieChart size={20} />
                             <span>Analytics</span>
-                        </Link>
+                        </Link> */}
                         <div className="flex items-center space-x-4 border-l pl-4 border-gray-700">
                             <button
                                 onClick={() => setShowProfileModal(true)}
@@ -85,9 +85,9 @@ const Navbar = () => {
                             >
                                 <User size={20} />
                             </button>
-                            <Link href="/settings" className="hover:text-purple-500 transition">
+                            {/* <Link href="/settings" className="hover:text-purple-500 transition">
                                 <Settings size={20} />
-                            </Link>
+                            </Link> */}
                             <button
                                 onClick={handleLogout}
                                 className="hover:text-purple-500 transition"
@@ -121,10 +121,10 @@ const Navbar = () => {
                                 <User size={20} />
                                 <span>Profile</span>
                             </button>
-                            <Link href="/settings" className="flex items-center space-x-2 hover:text-purple-500 transition p-2">
+                            {/* <Link href="/settings" className="flex items-center space-x-2 hover:text-purple-500 transition p-2">
                                 <Settings size={20} />
                                 <span>Settings</span>
-                            </Link>
+                            </Link> */}
                             <button
                                 onClick={handleLogout}
                                 className="flex items-center space-x-2 hover:text-purple-500 transition p-2 w-full"

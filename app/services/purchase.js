@@ -87,7 +87,7 @@ export const deletePurchase = async (id) => {
 };
 
 export const updatePurchase = async (id, params) => {
-    const apiUrl = `${process.env.NEXT_PUBLIC_FINACE_URL}/api/purchase/update/${id}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_FINACE_URL}/api/purchase/edit?purchaseId=${id}`;
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
         window.location.href = '/login';
@@ -98,12 +98,16 @@ export const updatePurchase = async (id, params) => {
         'authToken': authToken
     };
     try {
+        console.log("params", params);
+        console.log("id", id);
         const response = await axios.put(apiUrl, params, { headers });
+
         if (response.data.status !== 'success') {
             throw new Error('Failed to update purchase');
         }
         return response.data;
     } catch (error) {
+        console.log("error", error);
         if (error.response && error.response.status === 401) {
             window.location.href = '/login';
             return;
