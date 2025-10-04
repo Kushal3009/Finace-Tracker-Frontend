@@ -14,7 +14,8 @@ const Transactions = () => {
         if (!authToken) {
             router.replace('/login');
         }
-    }, [router]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const [showPurchaseModal, setShowPurchaseModal] = useState(false);
     const [purchases, setPurchases] = useState([]);

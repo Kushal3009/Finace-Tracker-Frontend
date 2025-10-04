@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react'; // Optional: use any icon library or plain text
+import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { handleSignup } from '../services/signup';
 import toast from 'react-hot-toast';
@@ -40,7 +40,7 @@ const Signup = () => {
                 router.push('/login');
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.message);
             console.error('Sign Up error:', error.message);
         }
     };
@@ -54,7 +54,7 @@ const Signup = () => {
                 <div className="flex-1 text-white pr-0 md:pr-8 max-w-xs md:max-w-md mb-8 md:mb-0 text-center md:text-left">
                     <h1 className="text-3xl md:text-5xl font-bold mb-4 whitespace-nowrap">Create Your Account</h1>
                     <button className="px-2 md:px-6 py-2 inline-block text-sm md:text-base">
-                        Gain full control over your finances and productivity. It's quick and easy to get started!
+                        {"Gain full control over your finances and productivity. It&apos;s quick and easy to get started!"}
                     </button>
                 </div>
 
@@ -133,7 +133,7 @@ const Signup = () => {
 
                             <div className="mt-6 text-center">
                                 <p className="text-sm text-gray-300">
-                                    Already have an account? <Link href="/login" className="text-white">Login</Link>
+                                    {"Already have an account? "} <Link href="/login" className="text-white">Login</Link>
                                 </p>
                             </div>
                         </form>
