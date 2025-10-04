@@ -32,16 +32,14 @@ const EditPurchase = ({ isOpen, onClose, onSubmit, purchase }) => {
                 const data = await fetchCategory();
                 setCategories(data);
             } catch (error) {
-                if (error.status == 401) {
+                if (error.status === 401) {
                     localStorage.removeItem('authToken');
                     router.push('/login');
-                    return;
                 }
-                console.error('Failed to fetch categories:', error.message);
             }
         };
         loadCategories();
-    }, []);
+    }, [router]); // ✅ added router
 
     useEffect(() => {
         if (purchase) {

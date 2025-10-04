@@ -84,60 +84,29 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        const fetchPurchases = async () => {
+        const fetchData = async () => {
             try {
-                const query = {
-                    type: "dashboard"
-                };
-                const data = await fetchPurchase(query);
-                setPurchases(data);
+                const purchaseData = await fetchPurchase({ type: "dashboard" });
+                setPurchases(purchaseData);
+
+                const salaryData = await fetchSalary();
+                const salaryDetails = salaryData.salaryDetails[0];
+                setCategory(salaryData.categoryDetails || []);
+                setStats({
+                    balance: salaryDetails.total_balance || 0,
+                    income: salaryDetails.current_balance || 0,
+                    expenses: salaryDetails.total_expense || 0,
+                    savings: salaryDetails.total_saving || 0
+                });
             } catch (error) {
-                if (error.status == 401) {
+                if (error.status === 401) {
                     localStorage.removeItem('authToken');
                     router.push('/login');
-                    return;
                 }
-                console.error('Failed to fetch purchases:', error.message);
             }
         };
-
-        const fetchSalarys = async () => {
-            try {
-                const data = await fetchSalary();
-                const salaryDetails = data.salaryDetails[0];
-                const categoryDetails = data.categoryDetails;
-
-                if (!data || Object.keys(data).length === 0) {
-                    setStats(prev => ({
-                        ...prev,
-                        balance: 0,
-                        income: 0,
-                        expenses: 0,
-                        savings: 0,
-                    }));
-                    setCategory([]);
-                } else {
-                    setStats(prev => ({
-                        ...prev,
-                        balance: salaryDetails.total_balance ? salaryDetails.total_balance : 0,
-                        income: salaryDetails.current_balance || 0,
-                        expenses: salaryDetails.total_expense || 0,
-                        savings: salaryDetails.total_saving || 0,
-                    }));
-                    setCategory(data.categoryDetails || []);
-                }
-            } catch (error) {
-                if (error.status == 401) {
-                    localStorage.removeItem('authToken');
-                    router.push('/login');
-                    return;
-                }
-                console.error('Failed to fetch salary:', error.message);
-            }
-        };
-        fetchPurchases();
-        fetchSalarys();
-    }, [refresh]);
+        fetchData();
+    }, [refresh, router]);
 
     return (
         <div className="p-6">

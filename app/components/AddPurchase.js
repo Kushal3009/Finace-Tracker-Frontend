@@ -40,7 +40,7 @@ const AddPurchase = ({ isOpen, onClose, onSubmit }) => {
             }
         };
         loadCategories();
-    }, []);
+    }, [router]); // ✅ added router here
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
